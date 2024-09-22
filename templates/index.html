@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bhagavad Gita Chatbot</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #e8eff5, #d0e1f9);
+    color: #333;
+}
+
+.container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.5s;
+    perspective: 1000px; /* Added for 3D effect */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+h1 {
+    text-align: center;
+    color: #4CAF50;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: 1px;
+}
+
+.chat-box {
+    background: #f4f4f9;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    max-height: 400px;
+    overflow-y: auto;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.chat-box:hover {
+    background-color: #e1e1e1;
+}
+
+.chat-input {
+    width: calc(100% - 22px);
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    margin-right: 5px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chat-input:focus {
+    border-color: #4CAF50;
+    outline: none;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+}
+
+.chat-btn {
+    padding: 12px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+.chat-btn:hover {
+    background-color: #45a049;
+    transform: scale(1.05) rotateY(5deg); /* Added rotation for 3D effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+p {
+    margin: 5px 0;
+}
+
+b {
+    color: #4CAF50;
+}
+
+.chat-output-message {
+    margin: 10px 0;
+    position: relative;
+}
+
+.user-message {
+    text-align: right;
+    color: #4CAF50;
+    background: #d9fdd9;
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    max-width: 80%;
+    animation: slideInRight 0.5s;
+    transform: perspective(500px) translateZ(10px); /* Added 3D effect */
+}
+
+.bot-message {
+    text-align: left;
+    color: #007bff;
+    background: #f1f1f1;
+    padding: 10px;
+    border-radius: 10px;
+    display: inline-block;
+    max-width: 80%;
+    animation: slideInLeft 0.5s;
+    transform: perspective(500px) translateZ(10px); /* Added 3D effect */
+}
+
+.timestamp {
+    font-size: 0.8em;
+    color: gray;
+    position: absolute;
+    bottom: -15px;
+    right: 5px;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%) rotateY(15deg);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0) rotateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%) rotateY(-15deg);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0) rotateY(0);
+        opacity: 1;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bhagavad Gita Chatbot</h1>
+        <div id="chat-output" class="chat-box"></div>
+        <input type="text" id="chat-input" class="chat-input" placeholder="Ask a question...">
+        <button id="chat-btn" class="chat-btn">Send</button>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#chat-btn').click(function(){
+                var query = $('#chat-input').val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/get_sloka',
+                    data: { query: query },
+                    success: function(response){
+                        $('#chat-output').append('<p><b>You:</b> ' + query + '</p>');
+                        $('#chat-output').append('<p><b>Bot:</b> ' + response.response + '</p>');
+                        $('#chat-input').val('');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
