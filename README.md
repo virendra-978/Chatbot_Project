@@ -7,4 +7,3 @@ Technologies Used:<br>
    <li>MySQL</li>
    <li>HTML/CSS/JavaScript</li>
  </ul>
-# Chatbot_Project
